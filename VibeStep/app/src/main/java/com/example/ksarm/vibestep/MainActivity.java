@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IntegerRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.jackandphantom.circularprogressbar.CircleProgressbar;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements
@@ -123,8 +125,7 @@ public class MainActivity extends AppCompatActivity implements
         }}
         };
 
-
-        HehPlayer player = new HehPlayer();
+    HehPlayer player;
 
     CircleProgressbar circleProgressbar;
     ImageView playButton;
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements
         playButton.setBackground(ContextCompat.getDrawable(this, imageId));
     }
 
-    private void initViews() {
+    private void initialization() {
         circleProgressbar = (CircleProgressbar) findViewById(R.id.pbProgress);
         circleProgressbar.setProgress(0);
         circleProgressbar.setProgressWithAnimation(100, 2000); // Default duration = 1500ms
@@ -150,6 +151,13 @@ public class MainActivity extends AppCompatActivity implements
                 changeState();
             }
         });
+
+        LinkedList<Integer> ids = new LinkedList<>();
+        ids.addLast(R.raw.running);
+        ids.addLast(R.raw.stationary);
+        ids.addLast(R.raw.walking);
+
+        player = new HehPlayer(this, ids);
     }
 
     @Override
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initViews();
+        initialization();
 
         countTv = (TextView) findViewById(R.id.txt1);
         countTv.setText("initial");
