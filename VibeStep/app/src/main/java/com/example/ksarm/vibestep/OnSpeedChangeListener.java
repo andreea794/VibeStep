@@ -6,6 +6,6 @@ package com.example.ksarm.vibestep;
 
 public interface OnSpeedChangeListener
 {
-    public void onSpeedChanged(int newValue);
+    public void onSpeedChanged(Walk newValue);
 //    public void onSpeedChanged(walk newValue);
 }

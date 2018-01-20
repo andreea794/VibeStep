@@ -8,19 +8,18 @@ public class ObservableSpeed
 {
     private OnSpeedChangeListener listener;
 
-    private int value;
-//    private walk value;
+    private Walk value;
 
     public void setOnSpeedChangeListener(OnSpeedChangeListener listener) {
         this.listener = listener;
     }
 
-    public int get() {
+    public Walk get() {
         return value;
     }
 
-    public void set(int value) {
-        if (this.value != value) {
+    public void set(Walk value) {
+        if (!this.value.equals(value)) {
 
             this.value = value;
             if (listener != null) {

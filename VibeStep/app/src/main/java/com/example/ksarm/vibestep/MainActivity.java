@@ -3,9 +3,11 @@ package com.example.ksarm.vibestep;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
@@ -35,31 +37,43 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     private boolean authInProgress = false;
     private GoogleApiClient mApiClient;
     private TextView txt1;
-    private Value stepValue;
-    ObservableSpeed walk;
+    private int stepValue;
+    private ObservableSpeed walk;
+    private TextView countTv;
+    private Walk currentWalkType;
+    private int initial;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt1 = (TextView) findViewById(R.id.txt1);
+        //txt1 = (TextView) findViewById(R.id.txt1);
+        countTv = (TextView) findViewById(R.id.txt1);
+        countTv.setText("initial");
+        initial = 0;
+
+
 
         walk= new ObservableSpeed();
 
         walk.setOnSpeedChangeListener(new OnSpeedChangeListener()
         {
             @Override
-            public void onSpeedChanged(int newValue) {
+            public void onSpeedChanged(Walk newValue) {
                 // public void onSpeedChanged(walk newValue) {
-                if (newValue == 0){
+                //.equals
 
-                } else if (newValue == 1){
+                if (newValue == Walk.STATIONARY){
 
-                } else if (newValue == 2){
+                } else if (newValue == Walk.FAST_WALK){
 
-                } else if (newValue == 3){
+                } else if (newValue == Walk.RUN){
 
-                } else if (newValue == 4){
+                } else if (newValue == Walk.SLOW_WALK){
+
+                } else if (newValue == Walk.SPRINT){
 
                 }
 
@@ -79,8 +93,13 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 .build();
     }
 
-    private int getSteps(){
-        return stepValue.asInt();
+    public int getStepCount(){
+        Log.e("b",Integer.toString(stepValue));
+        return stepValue;
+    }
+
+    public void updateTextView(String text) {
+        countTv.setText("Walk: " + text);
     }
 
     @Override
@@ -128,44 +147,6 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                     }
                 });
     }
-//        OnDataPointListener mListener3 = new OnDataPointListener() {
-//            @Override
-//            public void onDataPoint(DataPoint dataPoint) {
-//
-//
-//                final float speed = dataPoint.getValue(Field.FIELD_SPEED).asFloat();
-//
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        Log.i("GoogleFit", "In Speed" + speed );
-//                        //txt1.setText(Float.toString(speed));
-//                    }
-//                });
-//            }
-//
-//        };
-//
-//      Fitness.SensorsApi.add(
-//                mApiClient,
-//                new SensorRequest.Builder()
-//                        // Optional but recommended for custom data sets.
-//                        .setDataType(DataType.TYPE_SPEED)// Can't be omitted.
-//                        .setSamplingRate(1, TimeUnit.SECONDS).setAccuracyMode(SensorRequest.ACCURACY_MODE_HIGH)
-//                        .build(), mListener3)
-//                .setResultCallback(new ResultCallback<Status>() {
-//                    @Override
-//                    public void onResult(Status status) {
-//                        if (status.isSuccess()) {
-//                            Log.i("GoogleFit", "Listener registered!");
-//                        } else {
-//                            Log.i("GoogleFit", "Listener not registered.");
-//                        }
-//                    }
-//                });
-//
-//        }
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -231,8 +212,27 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + value, Toast.LENGTH_SHORT).show();
-                    stepValue = value;
+                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + value, Toast.LENGTH_SHORT).show();
+                    stepValue = value.asInt();
+                    Log.e("stepValue;onDataPoint",Integer.toString(stepValue));
+                    int m = stepValue;
+
+                    int changeInStep = stepValue - initial;
+                    Log.e("a",Integer.toString(changeInStep));
+                    if (changeInStep == 0)
+                        currentWalkType = Walk.STATIONARY;
+                    else if (changeInStep < 5)
+                        currentWalkType = Walk.SLOW_WALK;
+                    else if (changeInStep < 10)
+                        currentWalkType = Walk.FAST_WALK;
+                    else if (changeInStep < 15)
+                        currentWalkType = Walk.RUN;
+                    else
+                        currentWalkType = Walk.SPRINT;
+
+                    initial = m;
+                    updateTextView(currentWalkType.toString() + "; " + changeInStep);
+
                 }
             });
         }
