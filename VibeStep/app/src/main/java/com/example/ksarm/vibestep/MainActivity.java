@@ -219,13 +219,13 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
 
                     int changeInStep = stepValue - initial;
                     Log.e("a",Integer.toString(changeInStep));
-                    if (changeInStep == 0)
+                    if (changeInStep == Thresholds.STATIONARY)
                         currentWalkType = Walk.STATIONARY;
-                    else if (changeInStep < 5)
+                    else if (changeInStep < Thresholds.SLOW_WALK)
                         currentWalkType = Walk.SLOW_WALK;
-                    else if (changeInStep < 10)
+                    else if (changeInStep < Thresholds.FAST_WALK)
                         currentWalkType = Walk.FAST_WALK;
-                    else if (changeInStep < 15)
+                    else if (changeInStep < Thresholds.RUN)
                         currentWalkType = Walk.RUN;
                     else
                         currentWalkType = Walk.SPRINT;
