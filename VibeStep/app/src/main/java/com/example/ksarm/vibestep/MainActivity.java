@@ -2,12 +2,10 @@ package com.example.ksarm.vibestep;
 
 import android.content.Intent;
 import android.content.IntentSender;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
@@ -36,11 +34,14 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     private static final String AUTH_PENDING = "auth_state_pending";
     private boolean authInProgress = false;
     private GoogleApiClient mApiClient;
+    private TextView txt1;
+    private Value stepValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        txt1 = (TextView) findViewById(R.id.txt1);
 
         if (savedInstanceState != null) {
             authInProgress = savedInstanceState.getBoolean(AUTH_PENDING);
@@ -53,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 .addOnConnectionFailedListener(this)
                 .build();
 
+    }
+
+    private int getSteps(){
+        return stepValue.asInt();
     }
 
     @Override
@@ -85,38 +90,59 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     private void registerFitnessDataListener(DataSource dataSource, DataType dataType) {
 
         SensorRequest request = new SensorRequest.Builder()
-                .setDataSource( dataSource )
-                .setDataType( dataType )
-                .setSamplingRate( 3, TimeUnit.SECONDS )
+                .setDataSource(dataSource)
+                .setDataType(dataType)
+                .setSamplingRate(3, TimeUnit.SECONDS)
                 .build();
-        Fitness.SensorsApi.add(
-                mApiClient,
-                new SensorRequest.Builder()
-                        // Optional but recommended for custom data sets.
-                        .setDataType(DataType.TYPE_SPEED)// Can't be omitted.
-                        .setSamplingRate(1, TimeUnit.SECONDS).setAccuracyMode(SensorRequest.ACCURACY_MODE_HIGH)
-                        .build(), mListener3)
-                .setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()) {
-                            Log.i(TAG, "Listener registered!");
-                        } else {
-                            Log.i(TAG, "Listener not registered.");
-                        }
-                    }
-                });
 
-        Fitness.SensorsApi.add( mApiClient, request, this )
+        Fitness.SensorsApi.add(mApiClient, request, this)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
                         if (status.isSuccess()) {
-                            Log.e( "GoogleFit", "SensorApi successfully added" );
+                            Log.e("GoogleFit", "SensorApi successfully added");
                         }
                     }
                 });
     }
+//        OnDataPointListener mListener3 = new OnDataPointListener() {
+//            @Override
+//            public void onDataPoint(DataPoint dataPoint) {
+//
+//
+//                final float speed = dataPoint.getValue(Field.FIELD_SPEED).asFloat();
+//
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        Log.i("GoogleFit", "In Speed" + speed );
+//                        //txt1.setText(Float.toString(speed));
+//                    }
+//                });
+//            }
+//
+//        };
+//
+//      Fitness.SensorsApi.add(
+//                mApiClient,
+//                new SensorRequest.Builder()
+//                        // Optional but recommended for custom data sets.
+//                        .setDataType(DataType.TYPE_SPEED)// Can't be omitted.
+//                        .setSamplingRate(1, TimeUnit.SECONDS).setAccuracyMode(SensorRequest.ACCURACY_MODE_HIGH)
+//                        .build(), mListener3)
+//                .setResultCallback(new ResultCallback<Status>() {
+//                    @Override
+//                    public void onResult(Status status) {
+//                        if (status.isSuccess()) {
+//                            Log.i("GoogleFit", "Listener registered!");
+//                        } else {
+//                            Log.i("GoogleFit", "Listener not registered.");
+//                        }
+//                    }
+//                });
+//
+//        }
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -182,7 +208,8 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + value, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + value, Toast.LENGTH_SHORT).show();
+                    stepValue = value;
                 }
             });
         }
