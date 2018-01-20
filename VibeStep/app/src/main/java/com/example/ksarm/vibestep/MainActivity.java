@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txt1 = (TextView) findViewById(R.id.txt1);
-
         if (savedInstanceState != null) {
             authInProgress = savedInstanceState.getBoolean(AUTH_PENDING);
         }
