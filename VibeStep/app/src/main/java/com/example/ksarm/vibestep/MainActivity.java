@@ -36,12 +36,37 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     private GoogleApiClient mApiClient;
     private TextView txt1;
     private Value stepValue;
+    ObservableSpeed walk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txt1 = (TextView) findViewById(R.id.txt1);
+
+        walk= new ObservableSpeed();
+
+        walk.setOnSpeedChangeListener(new OnSpeedChangeListener()
+        {
+            @Override
+            public void onSpeedChanged(int newValue) {
+                // public void onSpeedChanged(walk newValue) {
+                if (newValue == 0){
+
+                } else if (newValue == 1){
+
+                } else if (newValue == 2){
+
+                } else if (newValue == 3){
+
+                } else if (newValue == 4){
+
+                }
+
+            }
+        });
+
+
         if (savedInstanceState != null) {
             authInProgress = savedInstanceState.getBoolean(AUTH_PENDING);
         }
@@ -52,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
     }
 
     private int getSteps(){
