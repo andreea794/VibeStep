@@ -59,15 +59,39 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     CircleProgressbar circleProgressbar;
     ImageView playButton;
 
-    private boolean mPlaying = true;
+    private boolean mPlaying = false;
     private void changeState() {
         mPlaying = !mPlaying;
 
-        int imageId = (mPlaying) ? R.drawable.ic_play_arrow_black_48dp : R.drawable.ic_pause_black_48dp;
+        int imageId = (!mPlaying) ? R.drawable.ic_play_arrow_black_48dp : R.drawable.ic_pause_black_48dp;
         playButton.setBackground(ContextCompat.getDrawable(this, imageId));
+
+        if (!mPlaying){
+            if (player != null) {
+                player.stop();
+            }
+        }
+        else {
+            if (player == null) {
+                initPlayer();
+            }
+            player.playSong(this, R.raw.stationary);
+            Log.i("debug", "Playing");
+        }
     }
 
+    private void initPlayer() {
+        LinkedList<Integer> ids = new LinkedList<>();
+        ids.addLast(R.raw.running);
+        ids.addLast(R.raw.stationary);
+        ids.addLast(R.raw.walking);
+
+        player = new HehPlayer(this, ids);
+    }
     private void initialization() {
+
+        initPlayer();
+
         circleProgressbar = (CircleProgressbar) findViewById(R.id.pbProgress);
         circleProgressbar.setProgress(0);
         circleProgressbar.setProgressWithAnimation(100, 2000); // Default duration = 1500ms
@@ -81,12 +105,6 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
             }
         });
 
-        LinkedList<Integer> ids = new LinkedList<>();
-        ids.addLast(R.raw.running);
-        ids.addLast(R.raw.stationary);
-        ids.addLast(R.raw.walking);
-
-        player = new HehPlayer(this, ids);
     }
 
     @Override
@@ -110,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 // public void onSpeedChanged(walk newValue) {
                 //.equals
 
-                Log.i("debug", "Received" + newValue.toString());
+                if (!mPlaying) return;
 
                 if (newValue == Walk.STATIONARY){
                     player.playSong(MainActivity.this, R.raw.stationary);
@@ -184,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
         SensorRequest request = new SensorRequest.Builder()
                 .setDataSource(dataSource)
                 .setDataType(dataType)
-                .setSamplingRate(1, TimeUnit.SECONDS)
+                .setSamplingRate(10, TimeUnit.SECONDS)
                 .build();
 
         Fitness.SensorsApi.add(mApiClient, request, this)
