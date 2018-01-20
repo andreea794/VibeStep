@@ -34,7 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements OnDataPointListener,
+public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -51,8 +51,80 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
 
     private Date lastRecord = null;
     private int speed;
+    private OnDataPointListener dataListener1 = new OnDataPointListener() {
+        @Override
+        public void onDataPoint(DataPoint dataPoint) {
+            for( final Field field : dataPoint.getDataType().getFields() ) {
+                final Value value = dataPoint.getValue( field );
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-    HehPlayer player = new HehPlayer();
+                        stepValue = value.asInt();
+                        Log.e("stepValue;onDataPoint",Integer.toString(stepValue));
+                        int m = stepValue;
+
+                        int changeInStep = stepValue - initial;
+
+                        Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + changeInStep, Toast.LENGTH_SHORT).show();
+                        speed=changeInStep;
+
+                        Log.i("a",Integer.toString(changeInStep));
+                        if (changeInStep == Thresholds.STATIONARY)
+                            currentWalkType = Walk.STATIONARY;
+
+                        else if (changeInStep < Thresholds.SLOW_WALK)
+                            currentWalkType = Walk.SLOW_WALK;
+                        else if (changeInStep < Thresholds.FAST_WALK)
+                            currentWalkType = Walk.FAST_WALK;
+                        else if (changeInStep < Thresholds.RUN)
+                            currentWalkType = Walk.RUN;
+                        else
+                            currentWalkType = Walk.SPRINT;
+
+                        initial = m;
+                        updateTextView(currentWalkType.toString() + "; " + changeInStep);
+
+                        onInformationReceived();
+                        walk.set(currentWalkType);
+                    }
+                });
+            }
+        }
+    };
+
+    private OnDataPointListener DataListener2 = new OnDataPointListener() {
+        @Override
+        public void onDataPoint(DataPoint dataPoint) {
+            for (final Field field : dataPoint.getDataType().getFields()) {
+                final Value value = dataPoint.getValue(field);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i(field.getName(),value.toString());
+                    }
+                });
+            }
+        }
+    };
+
+    private OnDataPointListener dataListener2 = new OnDataPointListener() {
+        @Override
+        public void onDataPoint(DataPoint dataPoint) {
+            for( final Field field : dataPoint.getDataType().getFields() ) {
+                final Value value = dataPoint.getValue( field );
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(field.toString(),value.toString());
+
+                    }
+                });
+        }}
+        };
+
+
+        HehPlayer player = new HehPlayer();
 
     CircleProgressbar circleProgressbar;
     ImageView playButton;
@@ -140,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     }
 
     public void updateTextView(String text) {
-        countTv.setText("Walk: " + text);
+        countTv.setText(String.format("Walk: %s", text));
     }
 
     @Override
@@ -150,17 +222,20 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     }
     @Override
     public void onConnected(Bundle bundle) {
+
         DataSourcesRequest dataSourceRequest = new DataSourcesRequest.Builder()
-                .setDataTypes( DataType.TYPE_STEP_COUNT_CUMULATIVE )
-                .setDataSourceTypes( DataSource.TYPE_RAW )
+                .setDataTypes( DataType.TYPE_STEP_COUNT_CUMULATIVE)
+                .setDataSourceTypes(DataSource.TYPE_RAW)
                 .build();
 
         ResultCallback<DataSourcesResult> dataSourcesResultCallback = new ResultCallback<DataSourcesResult>() {
             @Override
             public void onResult(DataSourcesResult dataSourcesResult) {
                 for( DataSource dataSource : dataSourcesResult.getDataSources() ) {
-                    if( DataType.TYPE_STEP_COUNT_CUMULATIVE.equals( dataSource.getDataType() ) ) {
+                    Log.i("datatype",dataSource.toString());
+                    if( DataType.TYPE_STEP_COUNT_CUMULATIVE.equals(dataSource.getDataType()) ) {
                         registerFitnessDataListener(dataSource, DataType.TYPE_STEP_COUNT_CUMULATIVE);
+                        Log.i("cumul","y");
                     }
                 }
             }
@@ -178,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 .setSamplingRate(1, TimeUnit.SECONDS)
                 .build();
 
-        Fitness.SensorsApi.add(mApiClient, request, this)
+        Fitness.SensorsApi.add(mApiClient, request, dataListener1)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
@@ -188,6 +263,25 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                     }
                 });
     }
+    private void registerFitnessDataListener1(DataSource dataSource, DataType dataType) {
+
+        SensorRequest request = new SensorRequest.Builder()
+                .setDataSource(dataSource)
+                .setDataType(dataType)
+                .setSamplingRate(1, TimeUnit.SECONDS)
+                .build();
+
+        Fitness.SensorsApi.add(mApiClient, request, dataListener2)
+                .setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        if (status.isSuccess()) {
+                            Log.e("GoogleFit", "SensorApi successfully added");
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -229,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     protected void onStop() {
         super.onStop();
 
-        Fitness.SensorsApi.remove( mApiClient, this )
+        Fitness.SensorsApi.remove( mApiClient, dataListener1 )
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
@@ -273,42 +367,43 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
         //circleProgressbar.setProgress( Math.min(1f, stepsPerSecond / Thresholds.SPRINT) * 100f );
     }
 
-    @Override
-    public void onDataPoint(DataPoint dataPoint) {
-        for( final Field field : dataPoint.getDataType().getFields() ) {
-            final Value value = dataPoint.getValue( field );
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    stepValue = value.asInt();
-                    Log.e("stepValue;onDataPoint",Integer.toString(stepValue));
-                    int m = stepValue;
-
-                    int changeInStep = stepValue - initial;
-
-                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + changeInStep, Toast.LENGTH_SHORT).show();
-                    speed=changeInStep;
-
-                    Log.i("a",Integer.toString(changeInStep));
-                    if (changeInStep == Thresholds.STATIONARY)
-                        currentWalkType = Walk.STATIONARY;
-
-                    else if (changeInStep < Thresholds.SLOW_WALK)
-                        currentWalkType = Walk.SLOW_WALK;
-                    else if (changeInStep < Thresholds.FAST_WALK)
-                        currentWalkType = Walk.FAST_WALK;
-                    else if (changeInStep < Thresholds.RUN)
-                        currentWalkType = Walk.RUN;
-                    else
-                        currentWalkType = Walk.SPRINT;
-
-                    initial = m;
-                    updateTextView(currentWalkType.toString() + "; " + changeInStep);
-
-                    onInformationReceived();
-                    walk.set(currentWalkType);
-                }
-            });
-        }
-    }}
+ //   @Override
+//    public void onDataPoint(DataPoint dataPoint) {
+//        for( final Field field : dataPoint.getDataType().getFields() ) {
+//            final Value value = dataPoint.getValue( field );
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    stepValue = value.asInt();
+//                    Log.e("stepValue;onDataPoint",Integer.toString(stepValue));
+//                    int m = stepValue;
+//
+//                    int changeInStep = stepValue - initial;
+//
+//                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + changeInStep, Toast.LENGTH_SHORT).show();
+//                    speed=changeInStep;
+//
+//                    Log.i("a",Integer.toString(changeInStep));
+//                    if (changeInStep == Thresholds.STATIONARY)
+//                        currentWalkType = Walk.STATIONARY;
+//
+//                    else if (changeInStep < Thresholds.SLOW_WALK)
+//                        currentWalkType = Walk.SLOW_WALK;
+//                    else if (changeInStep < Thresholds.FAST_WALK)
+//                        currentWalkType = Walk.FAST_WALK;
+//                    else if (changeInStep < Thresholds.RUN)
+//                        currentWalkType = Walk.RUN;
+//                    else
+//                        currentWalkType = Walk.SPRINT;
+//
+//                    initial = m;
+//                    updateTextView(currentWalkType.toString() + "; " + changeInStep);
+//
+//                    onInformationReceived();
+//                    walk.set(currentWalkType);
+//                }
+//            });
+//        }
+//    }
+ }
