@@ -95,35 +95,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     };
 
-    private OnDataPointListener DataListener2 = new OnDataPointListener() {
-        @Override
-        public void onDataPoint(DataPoint dataPoint) {
-            for (final Field field : dataPoint.getDataType().getFields()) {
-                final Value value = dataPoint.getValue(field);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i(field.getName(),value.toString());
-                    }
-                });
-            }
-        }
-    };
-
-    private OnDataPointListener dataListener2 = new OnDataPointListener() {
-        @Override
-        public void onDataPoint(DataPoint dataPoint) {
-            for( final Field field : dataPoint.getDataType().getFields() ) {
-                final Value value = dataPoint.getValue( field );
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e(field.toString(),value.toString());
-
-                    }
-                });
-        }}
-        };
 
     HehPlayer player;
 
@@ -243,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements
                     Log.i("datatype",dataSource.toString());
                     if( DataType.TYPE_STEP_COUNT_CUMULATIVE.equals(dataSource.getDataType()) ) {
                         registerFitnessDataListener(dataSource, DataType.TYPE_STEP_COUNT_CUMULATIVE);
-                        Log.i("cumul","y");
                     }
                 }
             }
@@ -262,24 +232,6 @@ public class MainActivity extends AppCompatActivity implements
                 .build();
 
         Fitness.SensorsApi.add(mApiClient, request, dataListener1)
-                .setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()) {
-                            Log.e("GoogleFit", "SensorApi successfully added");
-                        }
-                    }
-                });
-    }
-    private void registerFitnessDataListener1(DataSource dataSource, DataType dataType) {
-
-        SensorRequest request = new SensorRequest.Builder()
-                .setDataSource(dataSource)
-                .setDataType(dataType)
-                .setSamplingRate(1, TimeUnit.SECONDS)
-                .build();
-
-        Fitness.SensorsApi.add(mApiClient, request, dataListener2)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
