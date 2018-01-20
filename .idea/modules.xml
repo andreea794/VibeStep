@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/VibeStep.iml" filepath="$PROJECT_DIR$/.idea/VibeStep.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/VibeStep.iml" filepath="$PROJECT_DIR$/VibeStep.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+>>>>>>> 479bcc657accc708102847f8b520b53a021f97db
     </modules>
   </component>
 </project>

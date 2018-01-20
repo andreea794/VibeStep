@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +28,10 @@ import com.google.android.gms.fitness.request.DataSourcesRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
 import com.google.android.gms.fitness.result.DataSourcesResult;
+import com.jackandphantom.circularprogressbar.CircleProgressbar;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements OnDataPointListener,
@@ -43,17 +49,46 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     private Walk currentWalkType;
     private int initial;
 
+    private Date lastRecord = null;
+    private int speed;
 
+
+    CircleProgressbar circleProgressbar;
+    ImageView playButton;
+
+    private boolean mPlaying = true;
+    private void changeState() {
+        mPlaying = !mPlaying;
+
+        int imageId = (mPlaying) ? R.drawable.ic_play_arrow_black_48dp : R.drawable.ic_pause_black_48dp;
+        playButton.setBackground(ContextCompat.getDrawable(this, imageId));
+    }
+
+    private void initViews() {
+        circleProgressbar = (CircleProgressbar) findViewById(R.id.pbProgress);
+        circleProgressbar.setProgress(0);
+        circleProgressbar.setProgressWithAnimation(100, 2000); // Default duration = 1500ms
+
+        playButton = (ImageView) findViewById(R.id.ivPlay);
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeState();
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //txt1 = (TextView) findViewById(R.id.txt1);
+
+        initViews();
+
         countTv = (TextView) findViewById(R.id.txt1);
         countTv.setText("initial");
         initial = 0;
-
 
 
         walk= new ObservableSpeed();
@@ -64,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
             public void onSpeedChanged(Walk newValue) {
                 // public void onSpeedChanged(walk newValue) {
                 //.equals
+
+
 
                 if (newValue == Walk.STATIONARY){
 
@@ -134,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
         SensorRequest request = new SensorRequest.Builder()
                 .setDataSource(dataSource)
                 .setDataType(dataType)
-                .setSamplingRate(3, TimeUnit.SECONDS)
+                .setSamplingRate(1, TimeUnit.SECONDS)
                 .build();
 
         Fitness.SensorsApi.add(mApiClient, request, this)
@@ -205,6 +242,33 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
         super.onSaveInstanceState(outState);
         outState.putBoolean(AUTH_PENDING, authInProgress);
     }
+
+
+
+    private void onInformationReceived() {
+        if (lastRecord == null) {
+            lastRecord = Calendar.getInstance().getTime();
+            return;
+        }
+
+        Date curRecord = Calendar.getInstance().getTime();
+        long elapsed = curRecord.getTime() - lastRecord.getTime();
+        float stepsPerSecond = (float)speed / ((float)elapsed / 1000f); /// elapsed is in milliseconds
+
+        if (stepsPerSecond == Thresholds.STATIONARY)
+            currentWalkType = Walk.STATIONARY;
+        else if (stepsPerSecond < Thresholds.SLOW_WALK)
+            currentWalkType = Walk.SLOW_WALK;
+        else if (stepsPerSecond < Thresholds.FAST_WALK)
+            currentWalkType = Walk.FAST_WALK;
+        else if (stepsPerSecond < Thresholds.RUN)
+            currentWalkType = Walk.RUN;
+        else
+            currentWalkType = Walk.SPRINT;
+
+        //circleProgressbar.setProgress( Math.min(1f, stepsPerSecond / Thresholds.SPRINT) * 100f );
+    }
+
     @Override
     public void onDataPoint(DataPoint dataPoint) {
         for( final Field field : dataPoint.getDataType().getFields() ) {
@@ -212,13 +276,17 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + value, Toast.LENGTH_SHORT).show();
+
                     stepValue = value.asInt();
                     Log.e("stepValue;onDataPoint",Integer.toString(stepValue));
                     int m = stepValue;
 
                     int changeInStep = stepValue - initial;
-                    Log.e("a",Integer.toString(changeInStep));
+
+                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + changeInStep, Toast.LENGTH_SHORT).show();
+                    speed=changeInStep;
+
+                    Log.i("a",Integer.toString(changeInStep));
                     if (changeInStep == Thresholds.STATIONARY)
                         currentWalkType = Walk.STATIONARY;
                     else if (changeInStep < Thresholds.SLOW_WALK)
@@ -232,6 +300,8 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
 
                     initial = m;
                     updateTextView(currentWalkType.toString() + "; " + changeInStep);
+
+                    onInformationReceived();
 
                 }
             });
