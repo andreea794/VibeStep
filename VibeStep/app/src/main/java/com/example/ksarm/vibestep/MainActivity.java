@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
     private Date lastRecord = null;
     private int speed;
 
+    HehPlayer player = new HehPlayer();
 
     CircleProgressbar circleProgressbar;
     ImageView playButton;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
         initial = 0;
 
 
-        walk= new ObservableSpeed();
+        walk = new ObservableSpeed();
 
         walk.setOnSpeedChangeListener(new OnSpeedChangeListener()
         {
@@ -100,18 +101,21 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 // public void onSpeedChanged(walk newValue) {
                 //.equals
 
-
+                Log.i("debug", "Received" + newValue.toString());
 
                 if (newValue == Walk.STATIONARY){
+                    player.playSong(MainActivity.this, R.raw.stationary);
+                } else if (newValue == Walk.SLOW_WALK){
+                    player.playSong(MainActivity.this, R.raw.walking);
 
                 } else if (newValue == Walk.FAST_WALK){
+                    player.playSong(MainActivity.this, R.raw.walking);
 
                 } else if (newValue == Walk.RUN){
+                    player.playSong(MainActivity.this, R.raw.running);
 
-                } else if (newValue == Walk.SLOW_WALK){
-
-                } else if (newValue == Walk.SPRINT){
-
+                }  else if (newValue == Walk.SPRINT){
+                    player.playSong(MainActivity.this, R.raw.running);
                 }
 
             }
@@ -289,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                     Log.i("a",Integer.toString(changeInStep));
                     if (changeInStep == Thresholds.STATIONARY)
                         currentWalkType = Walk.STATIONARY;
+
                     else if (changeInStep < Thresholds.SLOW_WALK)
                         currentWalkType = Walk.SLOW_WALK;
                     else if (changeInStep < Thresholds.FAST_WALK)
@@ -302,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                     updateTextView(currentWalkType.toString() + "; " + changeInStep);
 
                     onInformationReceived();
-
+                    walk.set(currentWalkType);
                 }
             });
         }

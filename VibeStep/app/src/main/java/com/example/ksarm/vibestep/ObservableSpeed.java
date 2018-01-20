@@ -7,8 +7,12 @@ package com.example.ksarm.vibestep;
 public class ObservableSpeed
 {
     private OnSpeedChangeListener listener;
-
     private Walk value;
+
+    ObservableSpeed () {
+        value = Walk.STATIONARY;
+    }
+
 
     public void setOnSpeedChangeListener(OnSpeedChangeListener listener) {
         this.listener = listener;
