@@ -55,6 +55,13 @@ public class HehPlayer {
             @Override
             public void run() {
 
+                if (mCurPlaying == -1) {
+
+                    timer.cancel();
+                    timer.purge();
+                    return;
+                }
+
                 if (mCurPlaying == id) {
                     mp.setVolume(1f, 1f);
 
@@ -87,6 +94,13 @@ public class HehPlayer {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
+
+                if (mCurPlaying == -1) {
+
+                    timer.cancel();
+                    timer.purge();
+                    return;
+                }
 
                 if (curVolumeUp >= 1.0) {
                     timer.cancel();
@@ -124,8 +138,9 @@ public class HehPlayer {
 
     public void stop(){
         if (mCurPlaying != -1) {
+            //fadeOut(mPlayer.get(mCurPlaying), mCurPlaying);
+            mPlayer.get(mCurPlaying).pause();
             mCurPlaying = -1;
-            fadeOut(mPlayer.get(mCurPlaying), mCurPlaying);
         }
     }
 }
