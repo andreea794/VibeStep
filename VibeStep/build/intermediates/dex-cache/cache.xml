@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\8116ffafdc9af23822e67af7d89e3aae6301b5c5\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="863b37c463df79f340b5d83bbbfc63ad25612e01">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_96fb99158bc4a99d59239e97bdcde3c64455c578\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_35fb62688b7de3e946b99c462c03d65ee2345a83\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\176850642d3f14e233e015d6e69fa2e87ad2433f\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="d90cb9610620b7631c75f1953a4956810edd4bed">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_50d08ed6bcbb9d74bd16f6f5bf0fb31650e7c154\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\87c0e52527d0f1f3fa0709acc59fe6c0fb366984\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="42c5ee016c8815db37d662f18c497aee13150f9e">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_fb3c65baa1dc166cc7ce4b388dc80e8f06779af4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\4150db9041327c597023a5b343cd278a7a13e090\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="869a1d15fa9d8e8aa36587b042f553c1baea46bc">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_56816dbb17b55f57ed32511442c979f9c183f1e5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\cc1c9f80290f40602c6d927ec2d9ff45584f93a3\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="2d59a2bfadd1555550c477ea2223a6911692970d">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_209c68325c3105cb86428b6333140979cb06468a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\ccc95fb7c0a9970dcdeebde9f844acde0d275f0b\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="d6ff091e2c6df07894e5b921671404047d70d3f7">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_0fafdccdad047576656b1c0d9e520f18cdd56608\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\617cf96b1b470f47c9a121eb5d4d789af88927f4\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="729a6a1975c19d7461378172c7932f5c57f1c3fe">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_6cbe27b4619dba39b2f300c3588db3e65e56f673\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="59faecd692fd58f50d81439b1e5a05cb5793165c">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_3f22cb6ffce59cc8a8417bcac9e5584156518afc\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\KSarm\.android\build-cache\d95cf2213592cdf20d43f5f02ce6099301b37ff9\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="269771e258a0d07bc8f5213f1f5ed77e8f42d72f">
+        <dex dex="C:\Users\KSarm\Documents\VibeStep\VibeStep\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_07ba19dfa23853357732c9f0f4b458694f9dab09\classes.dex" />
+    </item>
+
+</items>
