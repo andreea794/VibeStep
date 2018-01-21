@@ -7,40 +7,40 @@
     tools:context="com.example.ksarm.vibestep.MainActivity">
 
 
-    <com.jackandphantom.circularprogressbar.CircleProgressbar
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:cpb_progress="50"
-        app:cpb_roundedCorner="true"
-        app:cpb_foregroundProgressWidth="15"
-        app:cpb_foregroundProgressColor="#1864c2"
+<com.jackandphantom.circularprogressbar.CircleProgressbar
+android:layout_width="250dp"
+android:layout_height="250dp"
+app:cpb_progress="50"
+app:cpb_roundedCorner="true"
+app:cpb_foregroundProgressWidth="15"
+app:cpb_foregroundProgressColor="#1864c2"
 
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+app:layout_constraintRight_toRightOf="parent"
+app:layout_constraintLeft_toLeftOf="parent"
+app:layout_constraintBottom_toTopOf="parent"
+app:layout_constraintTop_toBottomOf="parent"
 
-        android:id="@+id/pbProgress"
-        />
+android:id="@+id/pbProgress"
+    />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        android:background="@drawable/ic_play_arrow_black_48dp"
-        android:id="@+id/ivPlay"
-        />
+<ImageView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+app:layout_constraintRight_toRightOf="parent"
+app:layout_constraintLeft_toLeftOf="parent"
+app:layout_constraintBottom_toTopOf="parent"
+app:layout_constraintTop_toBottomOf="parent"
+android:background="@drawable/ic_play_arrow_black_48dp"
+android:id="@+id/ivPlay"
+    />
 
-    <TextView
-        android:id="@+id/txt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+<TextView
+android:id="@+id/txt1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Hello World!"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintLeft_toLeftOf="parent"
+app:layout_constraintRight_toRightOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>

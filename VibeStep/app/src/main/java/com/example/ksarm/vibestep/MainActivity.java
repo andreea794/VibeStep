@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements
                     public void run() {
 
                         stepValue = value.asInt();
-                        Log.e("stepValue;onDataPoint",Integer.toString(stepValue));
+                        Log.e("stepValue: ",Integer.toString(stepValue));
                         int m = stepValue;
 
                         int changeInStep = stepValue - initial;
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements
         SensorRequest request = new SensorRequest.Builder()
                 .setDataSource(dataSource)
                 .setDataType(dataType)
-                .setSamplingRate(10, TimeUnit.SECONDS)
+                .setSamplingRate(2, TimeUnit.SECONDS)
                 .build();
 
         Fitness.SensorsApi.add(mApiClient, request, dataListener1)
@@ -345,43 +345,4 @@ public class MainActivity extends AppCompatActivity implements
         //circleProgressbar.setProgress( Math.min(1f, stepsPerSecond / Thresholds.SPRINT) * 100f );
     }
 
- //   @Override
-//    public void onDataPoint(DataPoint dataPoint) {
-//        for( final Field field : dataPoint.getDataType().getFields() ) {
-//            final Value value = dataPoint.getValue( field );
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    stepValue = value.asInt();
-//                    Log.e("stepValue;onDataPoint",Integer.toString(stepValue));
-//                    int m = stepValue;
-//
-//                    int changeInStep = stepValue - initial;
-//
-//                    Toast.makeText(getApplicationContext(), "Field: " + field.getName() + " Value: " + changeInStep, Toast.LENGTH_SHORT).show();
-//                    speed=changeInStep;
-//
-//                    Log.i("a",Integer.toString(changeInStep));
-//                    if (changeInStep == Thresholds.STATIONARY)
-//                        currentWalkType = Walk.STATIONARY;
-//
-//                    else if (changeInStep < Thresholds.SLOW_WALK)
-//                        currentWalkType = Walk.SLOW_WALK;
-//                    else if (changeInStep < Thresholds.FAST_WALK)
-//                        currentWalkType = Walk.FAST_WALK;
-//                    else if (changeInStep < Thresholds.RUN)
-//                        currentWalkType = Walk.RUN;
-//                    else
-//                        currentWalkType = Walk.SPRINT;
-//
-//                    initial = m;
-//                    updateTextView(currentWalkType.toString() + "; " + changeInStep);
-//
-//                    onInformationReceived();
-//                    walk.set(currentWalkType);
-//                }
-//            });
-//        }
-//    }
  }
