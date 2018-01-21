@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 initPlayer();
             }
             player.playSong(this, R.raw.stationary);
-            Log.i("debug", "Playing");
         }
     }
 
@@ -118,8 +117,8 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
         countTv.setText("initial");
         initial = 0;
 
-
         walk = new ObservableSpeed();
+        walk.set(Walk.STATIONARY);
 
         walk.setOnSpeedChangeListener(new OnSpeedChangeListener()
         {
@@ -128,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
                 // public void onSpeedChanged(walk newValue) {
                 //.equals
 
+                Log.i("debug", "called " + newValue);
                 if (!mPlaying) return;
 
                 if (newValue == Walk.STATIONARY){
@@ -335,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements OnDataPointListen
 
                     onInformationReceived();
                     walk.set(currentWalkType);
+
                 }
             });
         }

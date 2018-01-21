@@ -54,8 +54,7 @@ public class HehPlayer {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-
-                if (mCurPlaying == -1) {
+                if (!mp.isPlaying() || mCurPlaying == -1) {
 
                     timer.cancel();
                     timer.purge();
@@ -95,7 +94,7 @@ public class HehPlayer {
             @Override
             public void run() {
 
-                if (mCurPlaying == -1) {
+                if (!mp.isPlaying() || mCurPlaying == -1) {
 
                     timer.cancel();
                     timer.purge();
@@ -141,6 +140,9 @@ public class HehPlayer {
             //fadeOut(mPlayer.get(mCurPlaying), mCurPlaying);
             mPlayer.get(mCurPlaying).pause();
             mCurPlaying = -1;
+        }
+        for (MediaPlayer mp : mPlayer.values()) {
+            if (mp.isPlaying()) mp.pause();
         }
     }
 }

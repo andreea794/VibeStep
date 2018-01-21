@@ -10,7 +10,7 @@ public class ObservableSpeed
     private Walk value;
 
     ObservableSpeed () {
-        value = Walk.STATIONARY;
+        //value = Walk.STATIONARY; this causes troubles
     }
 
 
@@ -23,6 +23,8 @@ public class ObservableSpeed
     }
 
     public void set(Walk value) {
+        this.value = Walk.STATIONARY;
+
         if (!this.value.equals(value)) {
 
             this.value = value;
