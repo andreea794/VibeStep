@@ -1,7 +1,0 @@
-#Sat Jan 20 16:28:35 GMT 2018
-base.0=C\:\\Users\\KSarm\\Documents\\VibeStep\\VibeStep\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_35fb62688b7de3e946b99c462c03d65ee2345a83
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=C\:\\Users\\KSarm\\Documents\\VibeStep\\VibeStep\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_3f22cb6ffce59cc8a8417bcac9e5584156518afc\\classes.dex
-base.1=C\:\\Users\\KSarm\\Documents\\VibeStep\\VibeStep\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_3f22cb6ffce59cc8a8417bcac9e5584156518afc
-file.0=C\:\\Users\\KSarm\\Documents\\VibeStep\\VibeStep\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_35fb62688b7de3e946b99c462c03d65ee2345a83\\classes.dex
