@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements
                 initPlayer();
             }
             player.playSong(this, R.raw.stationary);
-            Log.i("debug", "Playing");
         }
     }
 
@@ -160,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements
         countTv.setText("initial");
         initial = 0;
 
-
         walk = new ObservableSpeed();
+        walk.set(Walk.STATIONARY);
 
         walk.setOnSpeedChangeListener(new OnSpeedChangeListener()
         {
@@ -170,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements
                 // public void onSpeedChanged(walk newValue) {
                 //.equals
 
+                Log.i("debug", "called " + newValue);
                 if (!mPlaying) return;
 
                 if (newValue == Walk.STATIONARY){
